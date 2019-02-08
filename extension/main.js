@@ -14,7 +14,7 @@ chrome.input.ime.onActivate.addListener(function(engineID) {
     menus.push({id:'skk-' + modeName,
                 label:skk.modes[modeName].displayName,
                 style:'radio',
-                checked:(modeName == 'hiragana')});
+                checked:(modeName == 'ascii')});
   }
   chrome.input.ime.setMenuItems({engineID:engineID, items:menus});
 });
