@@ -23,8 +23,44 @@ chrome.input.ime.onFocus.addListener(function(context) {
   skk.context = context.contextID;
 });
 
+var ctrlKey = false 
+var lastRemappedKeyEvent = undefined;
+
+function isRemappedEvent(keyData){
+  return lastRemappedKeyEvent != undefined &&
+    (lastRemappedKeyEvent.key == keyData.key &&
+      lastRemappedKeyEvent.code == keyData.code &&
+      lastRemappedKeyEvent.type == keyData.type);
+}
+
 chrome.input.ime.onKeyEvent.addListener(function(engineID, keyData) {
-  if (keyData.type != 'keydown') {
+  
+  if (!isRemappedEvent(keyData)){
+  
+    if (keyData.code == "AltRight"){
+      keyData.code = "ControlRight";
+      keyData.key = "Ctrl";
+      keyData.ctrlKey = (keyData.type == "keydown");
+      ctrlKey = keyData.ctrlKey;
+      keyData.altKey = false
+
+      chrome.input.ime.sendKeyEvents({"contextID": skk.context, "keyData": [keyData]});
+      lastRemappedKeyEvent = keyData;
+      return true;
+    } else if (ctrlKey){
+      keyData.ctrlKey = ctrlKey;
+      keyData.altKey = false;
+      
+      chrome.input.ime.sendKeyEvents({"contextID": skk.context, "keyData": [keyData]});
+      lastRemappedKeyEvent = keyData;
+      return true;
+    
+    }
+  }
+
+
+  
+  if (keyData.type != 'keydown') { 
     return false;
   }
 
