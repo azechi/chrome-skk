@@ -13,6 +13,10 @@ function createRomanInput(table) {
       return false;
     }
 
+    if (keyevent.key == 'j' && keyevent.ctrlKey) {
+      return true;
+    }
+
     if (keyevent.key == 'Backspace' && skk.roman.length > 0) {
       skk.roman = skk.roman.slice(0, skk.roman.length - 1);
       return true;
