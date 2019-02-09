@@ -23,6 +23,10 @@ chrome.input.ime.onFocus.addListener(function(context) {
   skk.context = context.contextID;
 });
 
+chrome.input.ime.onBlur.addListener(context => {
+  skk.context = -1;
+});
+
 var ctrlKey = false 
 var lastRemappedKeyEvent = undefined;
 
